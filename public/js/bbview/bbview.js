@@ -1,0 +1,4 @@
+/*
+ * View namespace
+ */
+var BBView = { };

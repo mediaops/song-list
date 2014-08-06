@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+	<ul id="todo"></ul>
+	<script type="text/template" id="song-template">
+		<li><%= title %></li>
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+	<script src="http://documentcloud.github.com/backbone/backbone-min.js"></script>
+	<script>
+
+		var model = { };
+		model.Song = Backbone.Model.extend({
+			defaults: { title: '' }
+		});
+		
+		model.Songs = Backbone.Collection.extend( { model: model.Song } );
+	
+		var view = { };
+		view.SongItem = Backbone.View.extend({
+			collection: null,
+			template: _.template( $( "#song-template" ).html( ) ),
+			
+			initialize:  function( options ) {
+				this.$el = $( '#todo' );
+				this.collection = options.collection;
+							
+				// bind render
+				_.bindAll( this, 'render' );
+			 
+				// bind this view to the add and remove events of the collection!
+				this.collection.bind( 'reset', this.render );
+				this.collection.bind( 'add', this.render );
+				this.collection.bind( 'remove', this.render );
+			},
+  
+			render: function( ) {
+				var that = this;
+				this.$el.empty();
+				this.collection.forEach( function( item ) {
+					that.$el.append( that.template( item.attributes ) );
+				});
+							 
+				return this;
+			}
+		});
+		
+		var Router = Backbone.Router.extend({
+			routes: { '': 'index' },
+			
+			index: function( ) {
+				var songs = new model.Songs([
+					{ title: "song1" },
+					{ title: "song2" },
+					{ title: "song3" }
+				]);
+				
+				var songItem = new view.SongItem( { collection: songs } );
+				
+				songItem.render( );
+				
+				songs.remove([
+					{ title: "song3" }
+				]);
+			}
+		});
+		
+		$(document).ready( function( ) {
+			var router = new Router( );
+			Backbone.history.start( );
+		});
+	</script>
+</body>
+</html>

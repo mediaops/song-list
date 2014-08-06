@@ -1,0 +1,16 @@
+This is a small setup that allowed me to play with the Laravel Framework, Knockout.js, and Backbone.js.  I was able to create a small widget, that demonstrated the user of Laravel views, view sections, templating framework, restFul controllers, database migration and seeding, and the Eloquent ORM model.
+
+The Laravel code for this widget can be found at:
+/app/controllers
+/app/database
+/app/models
+/app/views
+
+I've also had a chance to experiment with both Knockout.js and Backbone.js.
+
+The code for both Knockout.js and Backbone.js are found in the jQuery ready block in their respective folders in the view directory.  I've also placed some helper Javascript code in seperate files for re-use.  The backbone view object for the song list is also found in a seperate file. 
+/app/views/koartists
+/app/views/bbartists
+/public/js
+
+The widget will first render a list of Artists then via javascript initialize the song list model and the Bootstrap Popover widget.  I initialized each Artist item to be attached to a Bootstrap Popover widget that will display a dynamic list of songs retrieved from the database for that Artist.  The Popover is displayed by clicking on an Artist item. The item will retrieve the song list from the database via Ajax then reset/update the song model with a successful return from the server.
